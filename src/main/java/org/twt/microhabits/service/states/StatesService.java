@@ -2,7 +2,6 @@ package org.twt.microhabits.service.states;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.twt.microhabits.states.dao.bean.States;
 import org.twt.microhabits.states.dao.mapper.StatesMapper;
 import org.twt.microhabits.states.vo.*;
@@ -181,9 +180,9 @@ public class StatesService {
         return stateRawMsg;
     }
 
-    public StateOut selectStates(int habit_id) {
+    public StateOut selectStates(int habitId) {
         StateOut stateOut = new StateOut();
-        stateOut.setStates(statesMapper.selectStates(habit_id));
+        stateOut.setStates(statesMapper.selectStates(habitId));
         if (stateOut.getStates() != null) {
             stateOut.setCode(0);
             stateOut.setMsg("Select successfully!");

@@ -14,9 +14,7 @@ public class UsersService {
         this.usersMapper = usersMapper;
     }
 
-    public UserRawMsg registerAUser(String user_name, String user_password) {
-        String userName = user_name;
-        String userPassword = user_password;
+    public UserRawMsg registerAUser(String userName, String userPassword) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -61,9 +59,7 @@ public class UsersService {
         return userRawMsg;
     }
 
-    public UserRawMsg userLogin(String user_name, String user_password) {
-        String userName = user_name;
-        String userPassword = user_password;
+    public UserRawMsg userLogin(String userName, String userPassword) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -96,8 +92,7 @@ public class UsersService {
         return userRawMsg;
     }
 
-    public UserMsgOut selectUserMsg(String user_name) {
-        String userName = user_name;
+    public UserMsgOut selectUserMsg(String userName) {
         UserMsgOut userMsgOut = new UserMsgOut();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -141,9 +136,7 @@ public class UsersService {
         return userMsgOut;
     }
 
-    public UserRawMsg updateUserName(String user_name, String user_name_new) {
-        String userName = user_name;
-        String userNameNew = user_name_new;
+    public UserRawMsg updateUserName(String userName, String userNameNew) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -199,9 +192,7 @@ public class UsersService {
         return userRawMsg;
     }
 
-    public UserRawMsg updateUserXp(String user_name, int user_xp_new) {
-        String userName = user_name;
-        int userXpNew = user_xp_new;
+    public UserRawMsg updateUserXp(String userName, int userXpNew) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -241,10 +232,7 @@ public class UsersService {
         return userRawMsg;
     }
 
-    public UserRawMsg updateUserName(String user_name, String user_password, String user_password_new) {
-        String userName = user_name;
-        String userPassword = user_password;
-        String userPasswordNew = user_password_new;
+    public UserRawMsg updateUserName(String userName, String userPassword, String userPasswordNew) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length

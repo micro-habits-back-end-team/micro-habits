@@ -77,8 +77,7 @@ public class HabitsService {
         return habitCreateOut;
     }
 
-    public HabitRawMsg deleteAHabit(int habit_id) {
-        int habitId = habit_id;
+    public HabitRawMsg deleteAHabit(int habitId) {
         HabitRawMsg habitRawMsg = new HabitRawMsg();
         int result = habitsMapper.deleteAHabit(habitId);
         if (result == 1) {
@@ -127,8 +126,7 @@ public class HabitsService {
         return habitRawMsg;
     }
 
-    public HabitRawMsg checkAHabit(int habit_id) {
-        int habitId = habit_id;
+    public HabitRawMsg checkAHabit(int habitId) {
         HabitRawMsg habitRawMsg = new HabitRawMsg();
         String userName = habitsMapper.selectUserName(habitId);
 
@@ -211,8 +209,7 @@ public class HabitsService {
         return habitRawMsg;
     }
 
-    public HabitSelectOut selectTrainingHabits(String user_name) {
-        String userName = user_name;
+    public HabitSelectOut selectTrainingHabits(String userName) {
         HabitSelectOut habitSelectOut = new HabitSelectOut();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -250,8 +247,7 @@ public class HabitsService {
         return habitSelectOut;
     }
 
-    public HabitSelectOut selectTrainedHabits(String user_name) {
-        String userName = user_name;
+    public HabitSelectOut selectTrainedHabits(String userName) {
         HabitSelectOut habitSelectOut = new HabitSelectOut();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -289,8 +285,7 @@ public class HabitsService {
         return habitSelectOut;
     }
 
-    public HabitSelectOut selectCheckedHabits(String user_name) {
-        String userName = user_name;
+    public HabitSelectOut selectCheckedHabits(String userName) {
         HabitSelectOut habitSelectOut = new HabitSelectOut();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -328,8 +323,7 @@ public class HabitsService {
         return habitSelectOut;
     }
 
-    public HabitSelectOut selectUncheckedHabits(String user_name) {
-        String userName = user_name;
+    public HabitSelectOut selectUncheckedHabits(String userName) {
         HabitSelectOut habitSelectOut = new HabitSelectOut();
 
         if (userName.length() > 10) {// Detect user_name length
