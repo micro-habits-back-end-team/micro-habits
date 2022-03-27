@@ -5,6 +5,7 @@ import java.sql.Date;
 public class Users {
     private String name;
     private String password;
+    private String salt;
     private float xp;
     private int consecutiveCheckInDays;
     private Date lastCheckInDate;

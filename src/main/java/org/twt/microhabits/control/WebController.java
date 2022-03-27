@@ -189,7 +189,7 @@ public class WebController {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @RequestMapping("/users/change_password")
-    public UserRawMsg updateUserName(String user_name, String user_password, String user_password_new) {
-        return usersService.updateUserName(user_name, user_password, user_password_new);
+    public UserRawMsg updateUserPassword(String user_name, String user_password, String user_password_new) {
+        return usersService.updateUserPassword(user_name, user_password, user_password_new);
     }
 }

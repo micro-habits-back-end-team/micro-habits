@@ -1,24 +1,10 @@
 server:
   port: 1926
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/micro_habits?characterEncoding=utf-8
-    username: micro_habits
-    password: lift-off_match
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    druid:
-      initial-size: 1
-      min-idle: 1
-      max-active: 20
-      test-on-borrow: true
-      stat-view-servlet:
-        allow: true
-
 #spring:
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/micro_habits?characterEncoding=utf-8
-#    username: wise_world
-#    password: root
+#    username: micro_habits
+#    password: lift-off_match
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    druid:
 #      initial-size: 1
@@ -27,3 +13,17 @@ spring:
 #      test-on-borrow: true
 #      stat-view-servlet:
 #        allow: true
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/micro_habits?characterEncoding=utf-8
+    username: wise_world
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      stat-view-servlet:
+        allow: true

@@ -6,6 +6,8 @@ import org.twt.microhabits.users.dao.mapper.UsersMapper;
 import org.twt.microhabits.users.vo.UserMsgOut;
 import org.twt.microhabits.users.vo.UserRawMsg;
 
+import java.util.UUID;
+
 @Component
 public class UsersService {
     private final UsersMapper usersMapper;
@@ -40,7 +42,9 @@ public class UsersService {
             }
         }
 
-        int result = usersMapper.userRegister(userName, userPassword);
+        String userSalt = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
+        userPassword = md5Encryption.md5Encryption(userPassword, userSalt);
+        int result = usersMapper.userRegister(userName, userPassword, userSalt);
         if (result == 1) {
             userRawMsg.setCode(0);
             userRawMsg.setMsg("Register successfully!");
@@ -73,6 +77,8 @@ public class UsersService {
             return userRawMsg;
         }
 
+        String userSalt = usersMapper.selectUserSalt(userName);
+        userPassword = md5Encryption.md5Encryption(userPassword, userSalt);
         String result = usersMapper.userLogin(userName, userPassword);
         if (result != null) {
             userRawMsg.setCode(0);
@@ -232,7 +238,7 @@ public class UsersService {
         return userRawMsg;
     }
 
-    public UserRawMsg updateUserName(String userName, String userPassword, String userPasswordNew) {
+    public UserRawMsg updateUserPassword(String userName, String userPassword, String userPasswordNew) {
         UserRawMsg userRawMsg = new UserRawMsg();
 
         if (userName.length() > 10) {// Detect user_name length
@@ -262,6 +268,9 @@ public class UsersService {
                 return userRawMsg;
             }
         }
+
+        String userSalt = usersMapper.selectUserSalt(userName);
+        userPassword = md5Encryption.md5Encryption(userPassword, userSalt);
         String passwordMatch = usersMapper.userLogin(userName, userPassword);
         if (passwordMatch == null) {
             try {
@@ -274,6 +283,8 @@ public class UsersService {
             }
         }
 
+        userSalt = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
+        userPasswordNew = md5Encryption.md5Encryption(userPasswordNew, userSalt);
         int result = usersMapper.updateUserPassword(userName, userPasswordNew);
         if (result == 1) {
             userRawMsg.setCode(0);

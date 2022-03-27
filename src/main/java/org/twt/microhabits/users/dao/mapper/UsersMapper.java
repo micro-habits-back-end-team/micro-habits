@@ -12,13 +12,14 @@ public interface UsersMapper {
 //                    @Result(property = "password", column = "password"),
 //                    @Result(property = "xp", column = "xp"),
 //                    @Result(property = "consecutiveCheckInDays", column = "consecutive_check-in_days"),
-//                    @Result(property = "lastCheckInDate", column = "last_check-in_date")
+//                    @Result(property = "lastCheckInDate", column = "last_check-in_date"),
+//                    @Result(property = "salt", column = "salt")
 //            }
 //    )
 
-    @Insert("INSERT INTO users (name, password, xp, `consecutive_check-in_days`, `last_check-in_date`) " +
-            "VALUES (#{name}, #{password}, 0, 0, '1000-01-01')")
-    int userRegister(@Param("name") String userName, @Param("password") String userPassword);
+    @Insert("INSERT INTO users (name, password, xp, `consecutive_check-in_days`, `last_check-in_date`, salt) " +
+            "VALUES (#{name}, #{password}, 0, 0, '1000-01-01', #{salt})")
+    int userRegister(@Param("name") String userName, @Param("password") String userPassword, @Param("salt") String userSalt);
 
     @Update("UPDATE users SET name=#{new_name} WHERE name=#{name}")
     int updateUserName(@Param("name") String userName, @Param("new_name") String userNameNew);
@@ -32,6 +33,9 @@ public interface UsersMapper {
     @Select("SELECT name FROM users WHERE name=#{name}")
     String selectUserName(@Param("name") String userName);
 
+    @Select("SELECT salt FROM users WHERE name=#{name}")
+    String selectUserSalt(@Param("name") String userName);
+
     @Select("SELECT name FROM users WHERE name=#{name} AND password=#{password}")
     String userLogin(@Param("name") String userName, @Param("password") String userPassword);
 
@@ -42,7 +46,8 @@ public interface UsersMapper {
                     @Result(property = "password", column = "password"),
                     @Result(property = "xp", column = "xp"),
                     @Result(property = "consecutiveCheckInDays", column = "consecutive_check-in_days"),
-                    @Result(property = "lastCheckInDate", column = "last_check-in_date")
+                    @Result(property = "lastCheckInDate", column = "last_check-in_date"),
+                    @Result(property = "salt", column = "salt")
             }
     )
     @Select("SELECT * FROM users WHERE name=#{name}")
