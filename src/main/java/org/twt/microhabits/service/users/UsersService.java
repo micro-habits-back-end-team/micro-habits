@@ -1,19 +1,29 @@
 package org.twt.microhabits.service.users;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.twt.microhabits.users.dao.bean.Users;
+import org.twt.microhabits.users.dao.mapper.UsersInfoMapper;
 import org.twt.microhabits.users.dao.mapper.UsersMapper;
 import org.twt.microhabits.users.vo.UserMsgOut;
 import org.twt.microhabits.users.vo.UserRawMsg;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 @Component
 public class UsersService {
     private final UsersMapper usersMapper;
+    private final UsersInfoMapper usersInfoMapper;
+    private final String UsersHeadPortraitLocation = "/head_portrait_img";
 
-    public UsersService(UsersMapper usersMapper) {
+    public UsersService(UsersMapper usersMapper, UsersInfoMapper usersInfoMapper) {
         this.usersMapper = usersMapper;
+        this.usersInfoMapper = usersInfoMapper;
     }
 
     public UserRawMsg registerAUser(String userName, String userPassword) {
@@ -45,7 +55,8 @@ public class UsersService {
         String userSalt = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
         userPassword = md5Encryption.md5Encryption(userPassword, userSalt);
         int result = usersMapper.userRegister(userName, userPassword, userSalt);
-        if (result == 1) {
+        result += usersInfoMapper.userInfoInit(userName);
+        if (result == 2) {
             userRawMsg.setCode(0);
             userRawMsg.setMsg("Register successfully!");
         }
@@ -302,5 +313,73 @@ public class UsersService {
         }
 
         return userRawMsg;
+    }
+
+    public UserRawMsg updateUserHeadPortrait(String userName, MultipartFile userHead) throws IOException {
+        UserRawMsg userRawMsg = new UserRawMsg();
+
+        String realPath = System.getProperty("user.dir") + UsersHeadPortraitLocation;
+        File newFile = new File(realPath);
+        if (!newFile.exists()) {
+            if (!newFile.mkdirs()) {
+                throw new IOException("Create dir fail!");
+            }
+        }
+
+        String userHeadPortrait = usersInfoMapper.selectUserHeadPortrait(userName);
+        if (!userHeadPortrait.equals("Empty")) {
+            File oldFile = new File(newFile + "/" + userHeadPortrait);
+            if (!oldFile.delete()) {
+                throw new IOException("Delete dir fail!");
+            }
+        }
+
+        String headFileName = userHead.getOriginalFilename();
+        if (headFileName == null) {
+            userRawMsg.setCode(1);
+            userRawMsg.setMsg("Update fail!");
+            return userRawMsg;
+        }
+        String fileName = userName + headFileName.substring(headFileName.lastIndexOf("."));
+        userHead.transferTo(new File(newFile, fileName));
+
+        int result = usersInfoMapper.updateUserHeadPortrait(userName, fileName);
+        if (result == 1) {
+            userRawMsg.setCode(0);
+            userRawMsg.setMsg("Set successfully!");
+        }
+        else {
+            try {
+                throw new Exception("Database error!");
+            }catch (Exception e) {
+                userRawMsg.setCode(1);
+                userRawMsg.setMsg("Update fail!");
+                e.printStackTrace();
+                return userRawMsg;
+            }
+        }
+        return userRawMsg;
+    }
+
+    public byte[] getUserHeadPortrait(String userName) throws IOException{
+        String realPath = System.getProperty("user.dir") + UsersHeadPortraitLocation;
+        File newFile = new File(realPath);
+        if (!newFile.exists()) {
+            if (!newFile.mkdirs()) {
+                throw new IOException("Create dir fail!");
+            }
+        }
+
+        String userHeadPortrait = usersInfoMapper.selectUserHeadPortrait(userName);
+        if (userHeadPortrait.equals("Empty")) {
+            return null;
+        }
+
+        FileInputStream inputStream = new FileInputStream(new File(newFile, userHeadPortrait));
+        byte[] bytes = new byte[inputStream.available()];
+        if(inputStream.read(bytes, 0, inputStream.available()) == -1) {
+            throw new IOException("Read dir fail!");
+        }
+        return bytes;
     }
 }
